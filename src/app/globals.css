@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* ============================================================
+   PORAT — Design Tokens & Global Styles
+   ============================================================ */
+
+:root {
+  /* Background tones */
+  --bg: #fbf6ec;
+  --bg-soft: #f5ecd9;
+  --bg-deep: #ebdfc6;
+  --bg-paper: #fefaf2;
+
+  /* Ink */
+  --ink: #1d1611;
+  --ink-1: #2c2218;
+  --ink-2: #4a3c2c;
+  --ink-3: #6e5d46;
+  --ink-mute: #998871;
+
+  /* Gold */
+  --gold: #8e6f3e;
+  --gold-deep: #6e5429;
+  --gold-soft: #b69462;
+  --gold-glow: #d8b680;
+
+  /* Lines */
+  --line: #d9c9aa;
+  --line-soft: #e7dcc4;
+  --line-deep: #b89c6f;
+
+  /* Shadows */
+  --shadow-soft: 0 1px 2px rgba(60,40,15,.04), 0 8px 24px -10px rgba(60,40,15,.10);
+  --shadow-card: 0 1px 2px rgba(60,40,15,.05), 0 22px 50px -22px rgba(60,40,15,.18);
+  --shadow-deep: 0 30px 80px -30px rgba(40,25,5,.35);
+
+  /* Type */
+  --serif-en: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+  --serif-he: "Noto Serif Hebrew", "David Libre", "Cormorant Garamond", serif;
+  --sans-he: "Assistant", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Font variables from next/font */
+:root {
+  --serif-en: var(--font-cormorant), "EB Garamond", Georgia, serif;
+  --serif-he: var(--font-noto-serif-he), "David Libre", var(--font-cormorant), serif;
+  --sans-he: var(--font-assistant), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@theme {
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-bg-deep: var(--bg-deep);
+  --color-bg-paper: var(--bg-paper);
+  --color-ink: var(--ink);
+  --color-ink-1: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-glow: var(--gold-glow);
+
+  --font-serif-en: var(--serif-en);
+  --font-serif-he: var(--serif-he);
+  --font-sans-he: var(--sans-he);
+  --font-mono: var(--mono);
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-card: var(--shadow-card);
+  --shadow-deep: var(--shadow-deep);
+
+  --animate-float-slow: float-slow 7s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 60s linear infinite;
+  --animate-sparkle: sparkle 3s ease-in-out infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+  --animate-pulse-ring: pulse 2.6s ease-out infinite;
+  --animate-fade-in: fadeIn 0.8s ease;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--sans-he);
+  font-weight: 300;
+  color: var(--ink-1);
+  background: var(--bg);
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; cursor: pointer; }
+img, svg { display: block; max-width: 100%; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Keyframes */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(2deg); }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(.5); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: .7; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes slideInR {
+  from { transform: translateX(100%); }
+  to { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-stagger > * {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
