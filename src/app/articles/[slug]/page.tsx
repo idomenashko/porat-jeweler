@@ -9,10 +9,10 @@ import { getArticles, getArticleBySlug } from '@/sanity/queries';
 export const revalidate = 60;
 
 const ARTICLES = [
-  { title: 'איך לבחור טבעת אירוסין', slug: 'how-to-choose-engagement-ring', category: 'מדריך', readTime: "8 דק'", excerpt: 'צורה, סגנון, גודל יהלום, מתכת — איך מתחילים, ולמה התקציב לא צריך להגביל אתכם.', tone: 'cream', body: 'בחירת טבעת אירוסין היא אחת ההחלטות המשמעותיות בחיים. לפני שניגשים לסטודיו, כדאי לדעת מה מחכה לכם...\n\nצורת האבן קובעת את המראה הכללי של הטבעת. סוליטר עגול הוא הסגנון הקלאסי ביותר, בעוד מרקיזה, אובל ופריר מעניקים מראה מוארך ומודרני.\n\nהמתכת — זהב לבן, צהוב, ורוד, או פלטינה — משפיעה לא רק על המראה אלא גם על תחזוקת התכשיט. פלטינה היא העמידה ביותר, אך גם היקרה ביותר.\n\nהתקציב לא צריך לעצור אתכם — עם ייעוץ נכון, ניתן לקבל תכשיט מהמם בכל תקציב.' },
-  { title: 'מה ההבדל בין זהב 14K ל־18K', slug: 'gold-14k-vs-18k', category: 'חומרים', readTime: "6 דק'", excerpt: 'טוהר, חוזק, גוון. מה מתאים לכם — וזה לא תמיד מה שאתם חושבים.', tone: 'gold', body: 'זהב 14K מכיל 58.5% זהב טהור, ואילו זהב 18K מכיל 75% זהב טהור.\n\nזהב 14K עמיד יותר, פחות נוטה לשריטות, ומתאים לתכשיטים שמשתמשים בהם יומיומית. הוא גם זול יותר.\n\nזהב 18K עשיר יותר בצבע, נוצץ יותר, ומתאים לתכשיטים עדינים ולאלה שלא רוצים פשרות באיכות.\n\nלטבעות נישואין ואירוסין, רוב הלקוחות שלנו בוחרים ב-18K — אך 14K הוא לחלוטין בחירה לגיטימית ויפה.' },
-  { title: 'איך בוחרים יהלום', slug: 'how-to-choose-diamond', category: 'יהלומים', readTime: "12 דק'", excerpt: 'ארבעת ה-Cs, מעבר לתעודה: מה חשוב לראות בעין, ומה כדאי להתעלם ממנו.', tone: 'pearl', body: 'ארבעת ה-Cs — Cut, Color, Clarity, Carat — הם הבסיס לכל שיחה על יהלומים.\n\nCut (ליטוש) הוא הפרמטר החשוב ביותר. יהלום עם ליטוש "Excellent" יבריק יותר מיהלום גדול יותר עם ליטוש גרוע.\n\nColor (צבע): בסולם D-Z, D הוא ללא צבע. יהלומי D-G נראים לבנים בעין הרגילה. H-I עדיין יפים ופחות יקרים.\n\nClarity (ניקיון): VS1-VS2 הם נקיים לעין הבלתי מזוינת ושווים כל שקל שנחסך לעומת FL.\n\nCarat (קראט): הגודל חשוב, אבל יהלום 0.9 קראט עם ליטוש מצוין יראה נהדר יותר מ-1 קראט עם ליטוש בינוני.' },
-  { title: 'תכשיט בעיצוב אישי: מה חשוב לדעת', slug: 'custom-jewelry-process', category: 'תהליך', readTime: "9 דק'", excerpt: 'מהפגישה הראשונה ועד למסירה: שלבי הייצור והבחירות לאורך הדרך.', tone: 'rose', body: 'תהליך יצירת תכשיט בעיצוב אישי לוקח בממוצע 4-8 שבועות.\n\nהשלב הראשון הוא שיחה: מה הרעיון? מה התקציב? מהו השימוש? מי מקבל את התכשיט?\n\nאחר כך באים הסקיצה וההדמיה — שלב שבו הרעיון מקבל צורה. אפשר לשנות, להתאים, לשפר — הכל לפני שנוגעים בחומר.\n\nהייצור עצמו לוקח 3-5 שבועות בהתאם למורכבות. בסוף התהליך — מסירה אישית, עם תיק עור, אישורים, ועם הסיפור שכולנו כתבנו יחד.' },
+  { title: 'איך לבחור טבעת אירוסין', slug: 'how-to-choose-engagement-ring', date: '2024-09-01', category: 'מדריך', readTime: "8 דק'", excerpt: 'צורה, סגנון, גודל יהלום, מתכת — איך מתחילים, ולמה התקציב לא צריך להגביל אתכם.', tone: 'cream', body: 'בחירת טבעת אירוסין היא אחת ההחלטות המשמעותיות בחיים. לפני שניגשים לסטודיו, כדאי לדעת מה מחכה לכם...\n\nצורת האבן קובעת את המראה הכללי של הטבעת. סוליטר עגול הוא הסגנון הקלאסי ביותר, בעוד מרקיזה, אובל ופריר מעניקים מראה מוארך ומודרני.\n\nהמתכת — זהב לבן, צהוב, ורוד, או פלטינה — משפיעה לא רק על המראה אלא גם על תחזוקת התכשיט. פלטינה היא העמידה ביותר, אך גם היקרה ביותר.\n\nהתקציב לא צריך לעצור אתכם — עם ייעוץ נכון, ניתן לקבל תכשיט מהמם בכל תקציב.' },
+  { title: 'מה ההבדל בין זהב 14K ל־18K', slug: 'gold-14k-vs-18k', date: '2024-09-15', category: 'חומרים', readTime: "6 דק'", excerpt: 'טוהר, חוזק, גוון. מה מתאים לכם — וזה לא תמיד מה שאתם חושבים.', tone: 'gold', body: 'זהב 14K מכיל 58.5% זהב טהור, ואילו זהב 18K מכיל 75% זהב טהור.\n\nזהב 14K עמיד יותר, פחות נוטה לשריטות, ומתאים לתכשיטים שמשתמשים בהם יומיומית. הוא גם זול יותר.\n\nזהב 18K עשיר יותר בצבע, נוצץ יותר, ומתאים לתכשיטים עדינים ולאלה שלא רוצים פשרות באיכות.\n\nלטבעות נישואין ואירוסין, רוב הלקוחות שלנו בוחרים ב-18K — אך 14K הוא לחלוטין בחירה לגיטימית ויפה.' },
+  { title: 'איך בוחרים יהלום', slug: 'how-to-choose-diamond', date: '2024-10-01', category: 'יהלומים', readTime: "12 דק'", excerpt: 'ארבעת ה-Cs, מעבר לתעודה: מה חשוב לראות בעין, ומה כדאי להתעלם ממנו.', tone: 'pearl', body: 'ארבעת ה-Cs — Cut, Color, Clarity, Carat — הם הבסיס לכל שיחה על יהלומים.\n\nCut (ליטוש) הוא הפרמטר החשוב ביותר. יהלום עם ליטוש "Excellent" יבריק יותר מיהלום גדול יותר עם ליטוש גרוע.\n\nColor (צבע): בסולם D-Z, D הוא ללא צבע. יהלומי D-G נראים לבנים בעין הרגילה. H-I עדיין יפים ופחות יקרים.\n\nClarity (ניקיון): VS1-VS2 הם נקיים לעין הבלתי מזוינת ושווים כל שקל שנחסך לעומת FL.\n\nCarat (קראט): הגודל חשוב, אבל יהלום 0.9 קראט עם ליטוש מצוין יראה נהדר יותר מ-1 קראט עם ליטוש בינוני.' },
+  { title: 'תכשיט בעיצוב אישי: מה חשוב לדעת', slug: 'custom-jewelry-process', date: '2024-10-20', category: 'תהליך', readTime: "9 דק'", excerpt: 'מהפגישה הראשונה ועד למסירה: שלבי הייצור והבחירות לאורך הדרך.', tone: 'rose', body: 'תהליך יצירת תכשיט בעיצוב אישי לוקח בממוצע 4-8 שבועות.\n\nהשלב הראשון הוא שיחה: מה הרעיון? מה התקציב? מהו השימוש? מי מקבל את התכשיט?\n\nאחר כך באים הסקיצה וההדמיה — שלב שבו הרעיון מקבל צורה. אפשר לשנות, להתאים, לשפר — הכל לפני שנוגעים בחומר.\n\nהייצור עצמו לוקח 3-5 שבועות בהתאם למורכבות. בסוף התהליך — מסירה אישית, עם תיק עור, אישורים, ועם הסיפור שכולנו כתבנו יחד.' },
 ];
 
 const TONE_BG: Record<string, string> = {
@@ -23,7 +23,12 @@ const TONE_BG: Record<string, string> = {
 };
 
 export async function generateStaticParams() {
-  const sanityArticles = await getArticles();
+  let sanityArticles: Awaited<ReturnType<typeof getArticles>> = [];
+  try {
+    sanityArticles = await getArticles();
+  } catch {
+    // Sanity unreachable at build time — fall back to hardcoded slugs
+  }
   const sanityParams = sanityArticles
     .filter(a => a.slug?.current)
     .map(a => ({ slug: a.slug!.current! }));
@@ -132,7 +137,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       excerpt: sanityArticle.excerpt ?? '',
       tone: 'cream',
       body: sanityArticle.excerpt ?? '',
-      datePublished: sanityArticle.publishedAt ?? new Date().toISOString().split('T')[0],
+      datePublished: sanityArticle.publishedAt ?? ARTICLES.find(a => a.slug === slug)?.date ?? new Date().toISOString().split('T')[0],
     };
     return <ArticlePageContent article={article} />;
   }
@@ -147,7 +152,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     excerpt: found.excerpt,
     tone: found.tone,
     body: found.body,
-    datePublished: new Date().toISOString().split('T')[0],
+    datePublished: found.date,
   };
   return <ArticlePageContent article={article} />;
 }

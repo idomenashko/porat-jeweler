@@ -26,7 +26,12 @@ const TONE_BG: Record<string, string> = {
 };
 
 export async function generateStaticParams() {
-  const sanityItems = await getGalleryItems();
+  let sanityItems: Awaited<ReturnType<typeof getGalleryItems>> = [];
+  try {
+    sanityItems = await getGalleryItems();
+  } catch {
+    // Sanity unreachable at build time — fall back to hardcoded slugs
+  }
   const sanityParams = sanityItems
     .filter(item => item.slug?.current)
     .map(item => ({ slug: item.slug!.current! }));

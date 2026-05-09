@@ -21,7 +21,12 @@ const SERVICES = [
 ];
 
 export async function generateStaticParams() {
-  const sanityServices = await getServices();
+  let sanityServices: Awaited<ReturnType<typeof getServices>> = [];
+  try {
+    sanityServices = await getServices();
+  } catch {
+    // Sanity unreachable at build time — fall back to hardcoded slugs
+  }
   const sanityParams = sanityServices
     .filter(s => s.slug?.current)
     .map(s => ({ slug: s.slug!.current! }));
