@@ -32,7 +32,7 @@ export function PortfolioSection({ galleryItems: sanityItems }: PortfolioSection
   const displayItems: DisplayItem[] = (sanityItems && sanityItems.length > 0)
     ? sanityItems.map((item) => ({
         he: item.title ?? '',
-        en: item.description ?? '',
+        en: item.materials ?? '',
         cat: item.category ?? '',
         desc: item.description ?? '',
         tone: 'cream', // fallback color, no image mapping yet

@@ -31,10 +31,19 @@ export function TestimonialsSection({ testimonials: sanityTestimonials }: Testim
   const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setActiveIdx((x) => (x + 1) % displayTestimonials.length), 6500);
-    return () => clearInterval(t);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setActiveIdx(0);
   }, [displayTestimonials.length]);
+
+  useEffect(() => {
+    if (displayTestimonials.length === 0) return;
+    const timer = setInterval(
+      () => setActiveIdx((x) => (x + 1) % displayTestimonials.length),
+      6500
+    );
+    return () => clearInterval(timer);
+  }, [displayTestimonials.length]);
+
+  if (displayTestimonials.length === 0) return null;
 
   const t = displayTestimonials[activeIdx];
 

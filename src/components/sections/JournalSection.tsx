@@ -30,7 +30,7 @@ export function JournalSection({ articles: sanityArticles }: JournalSectionProps
         read: a.readTime ?? '',
         excerpt: a.excerpt ?? '',
         tone: 'cream',
-        href: `/articles/${a.slug?.current ?? ''}`,
+        href: a.slug?.current ? `/articles/${a.slug.current}` : '#',
       }))
     : ARTICLES;
 
