@@ -5,8 +5,10 @@ import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Sparkles } from '@/components/ui/Sparkles';
 import { Reveal } from '@/components/ui/Reveal';
 import { IconArrowLeft, IconWhatsApp } from '@/components/icons';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 export function HeroSection() {
+  const { whatsapp } = useSiteSettings();
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -138,7 +140,9 @@ export function HeroSection() {
                   <IconArrowLeft width={16} height={16} />
                 </a>
                 <a
-                  href="https://wa.me/972500000000"
+                  href={whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: 10,
                     padding: '15px 30px', fontFamily: 'var(--sans-he)', fontWeight: 400, fontSize: 14,

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal } from '@/components/ui/Reveal';
 import { IconArrow, IconArrowLeft } from '@/components/icons';
+import type { Testimonial } from '@/types/sanity';
 
 const TESTIMONIALS = [
   { name: 'ש. ל.', role: 'טבעת אירוסין מותאמת', text: 'רגע ההצעה היה מושלם, והטבעת — מעבר לכל מה שדמיינתי. תהליך עדין, מקצועי ובלתי נשכח.' },
@@ -12,15 +13,30 @@ const TESTIMONIALS = [
   { name: 'ע. ר.', role: 'יהלום סוליטר', text: 'ייעוץ אמיתי, מקצועי, ללא לחץ. הרגשתי שאני בידיים בטוחות לכל אורך הדרך.' },
 ];
 
-export function TestimonialsSection() {
+type DisplayTestimonial = { name: string; role: string; text: string };
+
+interface TestimonialsSectionProps {
+  testimonials?: Testimonial[];
+}
+
+export function TestimonialsSection({ testimonials: sanityTestimonials }: TestimonialsSectionProps) {
+  const displayTestimonials: DisplayTestimonial[] = (sanityTestimonials && sanityTestimonials.length > 0)
+    ? sanityTestimonials.map((t) => ({
+        name: t.name ?? '',
+        role: t.role ?? '',
+        text: t.text ?? '',
+      }))
+    : TESTIMONIALS;
+
   const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setActiveIdx((x) => (x + 1) % TESTIMONIALS.length), 6500);
+    const t = setInterval(() => setActiveIdx((x) => (x + 1) % displayTestimonials.length), 6500);
     return () => clearInterval(t);
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayTestimonials.length]);
 
-  const t = TESTIMONIALS[activeIdx];
+  const t = displayTestimonials[activeIdx];
 
   return (
     <section style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg)' }}>
@@ -36,14 +52,14 @@ export function TestimonialsSection() {
             </Reveal>
             <div style={{ marginTop: 32, display: 'flex', gap: 12 }}>
               <button
-                onClick={() => setActiveIdx((x) => (x - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
+                onClick={() => setActiveIdx((x) => (x - 1 + displayTestimonials.length) % displayTestimonials.length)}
                 aria-label="עדות קודמת"
                 style={{ width: 48, height: 48, borderRadius: '50%', border: '1px solid var(--line-deep)', background: 'transparent', display: 'grid', placeItems: 'center', cursor: 'pointer' }}
               >
                 <IconArrow width={16} height={16} />
               </button>
               <button
-                onClick={() => setActiveIdx((x) => (x + 1) % TESTIMONIALS.length)}
+                onClick={() => setActiveIdx((x) => (x + 1) % displayTestimonials.length)}
                 aria-label="עדות הבאה"
                 style={{ width: 48, height: 48, borderRadius: '50%', border: '1px solid var(--line-deep)', background: 'var(--ink)', color: 'var(--bg)', display: 'grid', placeItems: 'center', cursor: 'pointer' }}
               >
@@ -80,7 +96,7 @@ export function TestimonialsSection() {
               </div>
             </div>
             <div style={{ display: 'flex', gap: 6 }}>
-              {TESTIMONIALS.map((_, x) => (
+              {displayTestimonials.map((_, x) => (
                 <button
                   key={x}
                   onClick={() => setActiveIdx(x)}

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal, RevealStagger, RevealItem } from '@/components/ui/Reveal';
+import type { GalleryItem } from '@/types/sanity';
 
 const PORTFOLIO = [
   { he: 'סוליטר ״עדן״', en: 'Solitaire Eden', cat: 'טבעת אירוסין', desc: 'יהלום עגול 1.20ct על טבעת זהב 18K.', tone: 'cream' },
@@ -21,7 +22,23 @@ const TONE_BG: Record<string, string> = {
   sketch: 'var(--bg-paper)',
 };
 
-export function PortfolioSection() {
+type DisplayItem = { he: string; en: string; cat: string; desc: string; tone: string };
+
+interface PortfolioSectionProps {
+  galleryItems?: GalleryItem[];
+}
+
+export function PortfolioSection({ galleryItems: sanityItems }: PortfolioSectionProps) {
+  const displayItems: DisplayItem[] = (sanityItems && sanityItems.length > 0)
+    ? sanityItems.map((item) => ({
+        he: item.title ?? '',
+        en: item.description ?? '',
+        cat: item.category ?? '',
+        desc: item.description ?? '',
+        tone: 'cream', // fallback color, no image mapping yet
+      }))
+    : PORTFOLIO;
+
   return (
     <section id="gallery" style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg-paper)' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)' }}>
@@ -38,14 +55,14 @@ export function PortfolioSection() {
         </div>
 
         <RevealStagger style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 36 }}>
-          {PORTFOLIO.map((p, i) => <PortfolioCard key={i} item={p} num={i + 101} />)}
+          {displayItems.map((p, i) => <PortfolioCard key={i} item={p} num={i + 101} />)}
         </RevealStagger>
       </div>
     </section>
   );
 }
 
-function PortfolioCard({ item, num }: { item: typeof PORTFOLIO[number]; num: number }) {
+function PortfolioCard({ item, num }: { item: DisplayItem; num: number }) {
   const [hovered, setHovered] = useState(false);
   return (
     <RevealItem>

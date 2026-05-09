@@ -5,11 +5,23 @@ import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Sparkles } from '@/components/ui/Sparkles';
 import { Reveal, RevealStagger, RevealItem } from '@/components/ui/Reveal';
 import { IconWhatsApp, IconPhone, IconArrowLeft, IconInstagram, IconFacebook, IconTikTok, IconDiamond } from '@/components/icons';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
+import type { ContactFormSettings } from '@/types/sanity';
 
 const TOPICS = ['טבעת אירוסין', 'טבעות נישואין', 'תכשיט מותאם אישית', 'יהלום', 'תיקון / חידוש', 'אחר'];
 
-export function ContactSection() {
-  const [form, setForm] = useState({ name: '', phone: '', topic: 'טבעת אירוסין', msg: '' });
+interface ContactSectionProps {
+  contactFormSettings?: ContactFormSettings | null;
+}
+
+export function ContactSection({ contactFormSettings }: ContactSectionProps) {
+  const { phone, whatsapp, social } = useSiteSettings();
+
+  const topics = (contactFormSettings?.topicOptions && contactFormSettings.topicOptions.length > 0)
+    ? contactFormSettings.topicOptions
+    : TOPICS;
+
+  const [form, setForm] = useState({ name: '', phone: '', topic: topics[0] ?? 'טבעת אירוסין', msg: '' });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -53,6 +65,12 @@ export function ContactSection() {
     marginBottom: 8,
   };
 
+  const socialLinks = [
+    { Icon: IconInstagram, label: 'Instagram', href: social.instagram },
+    { Icon: IconFacebook, label: 'Facebook', href: social.facebook },
+    { Icon: IconTikTok, label: 'TikTok', href: social.tiktok },
+  ].filter(({ href }) => href && href !== '#');
+
   return (
     <section id="contact" style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: '#1a130c', color: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
       <Sparkles count={14} />
@@ -76,7 +94,9 @@ export function ContactSection() {
             <RevealStagger style={{ display: 'grid', gap: 18, marginBottom: 36 }}>
               <RevealItem>
                 <a
-                  href="https://wa.me/972500000000"
+                  href={whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '18px 22px', border: '1px solid rgba(216,182,128,.3)', color: '#f5ead2', transition: 'all .3s' }}
                   onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = 'rgba(216,182,128,.08)')}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = 'transparent')}
@@ -93,7 +113,7 @@ export function ContactSection() {
               </RevealItem>
               <RevealItem>
                 <a
-                  href="tel:0500000000"
+                  href={`tel:${phone.replace(/[^0-9]/g, '')}`}
                   style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '18px 22px', border: '1px solid rgba(216,182,128,.3)', color: '#f5ead2', transition: 'all .3s' }}
                   onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = 'rgba(216,182,128,.08)')}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = 'transparent')}
@@ -103,7 +123,7 @@ export function ContactSection() {
                   </span>
                   <div>
                     <div style={{ fontSize: 12, color: 'var(--gold-glow)', letterSpacing: '.15em', textTransform: 'uppercase' as const, marginBottom: 4 }}>טלפון</div>
-                    <div style={{ fontFamily: 'var(--serif-he)', fontSize: 18, color: '#fdf6e6', direction: 'ltr', textAlign: 'right' as const }}>050-000-0000</div>
+                    <div style={{ fontFamily: 'var(--serif-he)', fontSize: 18, color: '#fdf6e6', direction: 'ltr', textAlign: 'right' as const }}>{phone}</div>
                   </div>
                   <IconArrowLeft width={18} height={18} style={{ marginInlineStart: 'auto', opacity: 0.6 }} />
                 </a>
@@ -112,24 +132,24 @@ export function ContactSection() {
 
             <div style={{ paddingTop: 28, borderTop: '1px solid rgba(216,182,128,.2)' }}>
               <div style={{ fontSize: 11, color: 'var(--gold-glow)', letterSpacing: '.25em', textTransform: 'uppercase' as const, marginBottom: 18 }}>עקבו אחרינו</div>
-              <div style={{ display: 'flex', gap: 12 }}>
-                {[
-                  { Icon: IconInstagram, label: 'Instagram' },
-                  { Icon: IconFacebook, label: 'Facebook' },
-                  { Icon: IconTikTok, label: 'TikTok' },
-                ].map(({ Icon, label }) => (
-                  <a
-                    key={label}
-                    href="#"
-                    aria-label={label}
-                    style={{ width: 46, height: 46, border: '1px solid rgba(216,182,128,.4)', color: '#f5ead2', display: 'grid', placeItems: 'center', transition: 'all .3s' }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--gold)'; (e.currentTarget as HTMLElement).style.color = '#1a130c'; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#f5ead2'; }}
-                  >
-                    <Icon width={18} height={18} />
-                  </a>
-                ))}
-              </div>
+              {socialLinks.length > 0 && (
+                <div style={{ display: 'flex', gap: 12 }}>
+                  {socialLinks.map(({ Icon, label, href }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      aria-label={label}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ width: 46, height: 46, border: '1px solid rgba(216,182,128,.4)', color: '#f5ead2', display: 'grid', placeItems: 'center', transition: 'all .3s' }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--gold)'; (e.currentTarget as HTMLElement).style.color = '#1a130c'; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#f5ead2'; }}
+                    >
+                      <Icon width={18} height={18} />
+                    </a>
+                  ))}
+                </div>
+              )}
               <div style={{ marginTop: 26, fontSize: 13, color: 'rgba(245,234,210,.55)', lineHeight: 1.7 }}>
                 שירות אישי ללקוחות בכל רחבי ישראל<br />
                 ללא חנות פתוחה — בתיאום מראש בלבד
@@ -166,7 +186,7 @@ export function ContactSection() {
                   <label style={{ display: 'block' }}>
                     <span style={labelStyle}>נושא הפנייה</span>
                     <select value={form.topic} onChange={(e) => setForm({ ...form, topic: e.target.value })} style={{ ...inputStyle, appearance: 'none' as const }}>
-                      {TOPICS.map((o) => <option key={o} style={{ background: '#1a130c', color: '#fdf6e6' }}>{o}</option>)}
+                      {topics.map((o) => <option key={o} style={{ background: '#1a130c', color: '#fdf6e6' }}>{o}</option>)}
                     </select>
                   </label>
                   <label style={{ display: 'block' }}>

@@ -3,6 +3,7 @@
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal, RevealStagger, RevealItem } from '@/components/ui/Reveal';
 import { IconArrowLeft } from '@/components/icons';
+import type { Service } from '@/types/sanity';
 
 const SERVICES = [
   { num: '01', he: 'טבעות אירוסין בהתאמה אישית', en: 'Bespoke Engagement', desc: 'סוליטר, פאווה, שלושה יהלומים — בעיצוב חד-פעמי.' },
@@ -17,7 +18,22 @@ const SERVICES = [
   { num: '10', he: 'תכשיטים מוכנים', en: 'Ready-to-Wear', desc: 'אוסף מצומצם של חתיכות מוכנות, מוגבל בעותקים.' },
 ];
 
-export function ServicesSection() {
+type DisplayService = { num: string; he: string; en: string; desc: string };
+
+interface ServicesSectionProps {
+  services?: Service[];
+}
+
+export function ServicesSection({ services: sanityServices }: ServicesSectionProps) {
+  const displayServices: DisplayService[] = (sanityServices && sanityServices.length > 0)
+    ? sanityServices.map((s, i) => ({
+        num: s.number ?? String(i + 1).padStart(2, '0'),
+        he: s.title ?? '',
+        en: s.englishTitle ?? '',
+        desc: s.description ?? '',
+      }))
+    : SERVICES;
+
   return (
     <section id="services" style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg)' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)' }}>
@@ -42,7 +58,7 @@ export function ServicesSection() {
         </div>
 
         <RevealStagger style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 0, borderTop: '1px solid var(--line-soft)', borderInlineStart: '1px solid var(--line-soft)' }}>
-          {SERVICES.map((s, i) => (
+          {displayServices.map((s, i) => (
             <ServiceCard key={i} service={s} />
           ))}
         </RevealStagger>
@@ -51,7 +67,7 @@ export function ServicesSection() {
   );
 }
 
-function ServiceCard({ service }: { service: typeof SERVICES[number] }) {
+function ServiceCard({ service }: { service: DisplayService }) {
   return (
     <RevealItem>
       <article

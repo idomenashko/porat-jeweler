@@ -3,8 +3,10 @@
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal } from '@/components/ui/Reveal';
 import { IconWhatsApp } from '@/components/icons';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 export function ConsultationCTASection() {
+  const { whatsapp } = useSiteSettings();
   return (
     <section style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg-paper)' }}>
       <div style={{ maxWidth: 980, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)', textAlign: 'center' }}>
@@ -30,7 +32,9 @@ export function ConsultationCTASection() {
               קביעת פגישה פרטית
             </a>
             <a
-              href="https://wa.me/972500000000"
+              href={whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 30px', background: 'transparent', color: 'var(--ink)', border: '1px solid var(--ink-2)', fontFamily: 'var(--sans-he)', fontWeight: 400, fontSize: 14, letterSpacing: '.08em', cursor: 'pointer', minWidth: 240 }}
             >
               <IconWhatsApp width={16} height={16} />

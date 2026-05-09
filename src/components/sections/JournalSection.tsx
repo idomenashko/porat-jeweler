@@ -1,5 +1,6 @@
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal, RevealStagger, RevealItem } from '@/components/ui/Reveal';
+import type { Article } from '@/types/sanity';
 
 const ARTICLES = [
   { he: 'איך לבחור טבעת אירוסין', cat: 'מדריך', read: "8 דק'", excerpt: 'צורה, סגנון, גודל יהלום, מתכת — איך מתחילים, ולמה התקציב לא צריך להגביל אתכם.', tone: 'cream', href: '/articles/how-to-choose-engagement-ring' },
@@ -15,7 +16,24 @@ const TONE_BG: Record<string, string> = {
   rose: 'linear-gradient(135deg, #f0d8c2, #d9b491 50%, #a87b54 100%)',
 };
 
-export function JournalSection() {
+type DisplayArticle = { he: string; cat: string; read: string; excerpt: string; tone: string; href: string };
+
+interface JournalSectionProps {
+  articles?: Article[];
+}
+
+export function JournalSection({ articles: sanityArticles }: JournalSectionProps) {
+  const displayArticles: DisplayArticle[] = (sanityArticles && sanityArticles.length > 0)
+    ? sanityArticles.map((a) => ({
+        he: a.title ?? '',
+        cat: a.category ?? '',
+        read: a.readTime ?? '',
+        excerpt: a.excerpt ?? '',
+        tone: 'cream',
+        href: `/articles/${a.slug?.current ?? ''}`,
+      }))
+    : ARTICLES;
+
   return (
     <section id="journal" style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg-soft)' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)' }}>
@@ -34,7 +52,7 @@ export function JournalSection() {
         </div>
 
         <RevealStagger style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 28 }}>
-          {ARTICLES.map((a, i) => (
+          {displayArticles.map((a, i) => (
             <RevealItem key={i}>
               <article style={{ cursor: 'pointer' }}>
                 <a href={a.href}>
