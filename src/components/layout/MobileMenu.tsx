@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { IconClose, IconWhatsApp, IconInstagram, IconFacebook, IconTikTok } from '@/components/icons';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 const menuLinks = [
   { id: 'about', label: 'אודות', num: '01' },
@@ -20,6 +21,8 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+  const { whatsapp, social } = useSiteSettings();
+
   if (!isOpen) return null;
 
   const goTo = (id: string) => {
@@ -130,7 +133,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
         <div style={{ marginTop: 24, display: 'grid', gap: 12 }}>
           <a
-            href="https://wa.me/972500000000"
+            href={whatsapp}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -181,13 +184,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             }}
           >
             {[
-              { Icon: IconInstagram, label: 'Instagram' },
-              { Icon: IconFacebook, label: 'Facebook' },
-              { Icon: IconTikTok, label: 'TikTok' },
-            ].map(({ Icon, label }) => (
+              { Icon: IconInstagram, label: 'Instagram', href: social.instagram },
+              { Icon: IconFacebook, label: 'Facebook', href: social.facebook },
+              { Icon: IconTikTok, label: 'TikTok', href: social.tiktok },
+            ].map(({ Icon, label, href }) => (
               <a
                 key={label}
-                href="#"
+                href={href}
                 aria-label={label}
                 style={{
                   width: 38,

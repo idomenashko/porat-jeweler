@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 const navCol = { title: 'ניווט', links: [
   { label: 'בית', href: '#home' },
@@ -18,14 +21,16 @@ const servicesCol = { title: 'שירותים', links: [
   { label: 'תיקון וחידוש', href: '/services' },
 ]};
 
-const contactCol = { title: 'צור קשר', links: [
-  { label: 'WhatsApp', href: 'https://wa.me/972500000000' },
-  { label: 'Instagram', href: '#' },
-  { label: 'Facebook', href: '#' },
-  { label: 'TikTok', href: '#' },
-]};
-
 export function Footer() {
+  const { whatsapp, description, social } = useSiteSettings();
+
+  const contactCol = { title: 'צור קשר', links: [
+    { label: 'WhatsApp', href: whatsapp },
+    { label: 'Instagram', href: social.instagram },
+    { label: 'Facebook', href: social.facebook },
+    { label: 'TikTok', href: social.tiktok },
+  ]};
+
   return (
     <footer
       style={{
@@ -66,7 +71,7 @@ export function Footer() {
                 maxWidth: 320,
               }}
             >
-              סטודיו פרטי לעיצוב והפקה של תכשיטים — טבעות אירוסין, יהלומים, זהב וכסף — בכל רחבי ישראל, בתיאום מראש בלבד.
+              {description}
             </p>
           </div>
 

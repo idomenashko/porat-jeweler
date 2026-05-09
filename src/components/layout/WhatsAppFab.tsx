@@ -1,11 +1,14 @@
 'use client';
 
 import { IconWhatsApp } from '@/components/icons';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 export function WhatsAppFab() {
+  const { whatsapp } = useSiteSettings();
+
   return (
     <a
-      href="https://wa.me/972500000000"
+      href={whatsapp}
       aria-label="שלח הודעה בוואטסאפ"
       target="_blank"
       rel="noopener noreferrer"

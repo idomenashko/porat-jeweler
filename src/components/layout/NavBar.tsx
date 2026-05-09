@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { IconMenu, IconWhatsApp } from '@/components/icons';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 const navLinks = [
   { id: 'about', label: 'אודות' },
@@ -18,6 +19,7 @@ interface NavBarProps {
 }
 
 export function NavBar({ onMenuOpen }: NavBarProps) {
+  const { whatsapp } = useSiteSettings();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -102,7 +104,7 @@ export function NavBar({ onMenuOpen }: NavBarProps) {
             <IconMenu width={18} height={18} />
           </button>
           <a
-            href="https://wa.me/972500000000"
+            href={whatsapp}
             aria-label="WhatsApp"
             style={{
               width: 42,
