@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { cormorant, assistant, jetbrainsMono, notoSerifHebrew } from '@/lib/fonts';
 import { Footer } from '@/components/layout/Footer';
 import { ClientShell } from './ClientShell';
+import { getSiteSettings } from '@/sanity/queries';
+import { SiteSettingsProvider } from '@/contexts/SiteSettingsContext';
 import './globals.css';
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: {
@@ -26,11 +30,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}): Promise<React.JSX.Element> {
+  const siteSettings = await getSiteSettings();
+
   return (
     <html
       lang="he"
@@ -38,8 +44,10 @@ export default function RootLayout({
       className={`${cormorant.variable} ${assistant.variable} ${jetbrainsMono.variable} ${notoSerifHebrew.variable}`}
     >
       <body>
-        <ClientShell>{children}</ClientShell>
-        <Footer />
+        <SiteSettingsProvider settings={siteSettings}>
+          <ClientShell>{children}</ClientShell>
+          <Footer />
+        </SiteSettingsProvider>
       </body>
     </html>
   );
