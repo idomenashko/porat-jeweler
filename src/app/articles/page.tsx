@@ -26,7 +26,7 @@ const TONE_BG: Record<string, string> = {
 };
 
 export default async function ArticlesPage() {
-  const sanityArticles = await getArticles();
+  const sanityArticles = await getArticles().catch(() => []);
 
   const displayArticles = (sanityArticles && sanityArticles.length > 0)
     ? sanityArticles.map(a => ({

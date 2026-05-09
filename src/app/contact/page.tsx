@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const [siteSettings, contactFormSettings] = await Promise.all([
-    getSiteSettings(),
-    getContactFormSettings(),
+    getSiteSettings().catch(() => null),
+    getContactFormSettings().catch(() => null),
   ]);
 
   const localBusinessSchema = {

@@ -35,7 +35,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }): Promise<React.JSX.Element> {
-  const siteSettings = await getSiteSettings();
+  const siteSettings = await getSiteSettings().catch(() => null);
 
   return (
     <html

@@ -30,7 +30,7 @@ const TONE_BG: Record<string, string> = {
 };
 
 export default async function GalleryPage() {
-  const sanityItems = await getGalleryItems();
+  const sanityItems = await getGalleryItems().catch(() => []);
 
   const displayItems = (sanityItems && sanityItems.length > 0)
     ? sanityItems.map((item) => ({

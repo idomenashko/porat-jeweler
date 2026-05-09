@@ -25,7 +25,7 @@ const SERVICES = [
 ];
 
 export default async function ServicesPage() {
-  const sanityServices = await getServices();
+  const sanityServices = await getServices().catch(() => []);
 
   const displayServices = (sanityServices && sanityServices.length > 0)
     ? sanityServices.map((s, i) => ({

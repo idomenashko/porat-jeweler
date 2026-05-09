@@ -16,12 +16,12 @@ export const revalidate = 60;
 
 export default async function HomePage() {
   const [siteSettings, services, galleryItems, testimonials, articles, contactFormSettings] = await Promise.all([
-    getSiteSettings(),
-    getServices(),
-    getGalleryItems(true), // featured only
-    getTestimonials(),
-    getArticles(),
-    getContactFormSettings(),
+    getSiteSettings().catch(() => null),
+    getServices().catch(() => []),
+    getGalleryItems(true).catch(() => []), // featured only
+    getTestimonials().catch(() => []),
+    getArticles().catch(() => []),
+    getContactFormSettings().catch(() => null),
   ]);
 
   const professionalServiceSchema = {
