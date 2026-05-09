@@ -106,6 +106,8 @@ export function NavBar({ onMenuOpen }: NavBarProps) {
           <a
             href={whatsapp}
             aria-label="WhatsApp"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               width: 42,
               height: 42,

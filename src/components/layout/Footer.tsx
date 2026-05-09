@@ -29,7 +29,7 @@ export function Footer() {
     { label: 'Instagram', href: social.instagram },
     { label: 'Facebook', href: social.facebook },
     { label: 'TikTok', href: social.tiktok },
-  ]};
+  ].filter(({ href }) => href && href !== '#') };
 
   return (
     <footer

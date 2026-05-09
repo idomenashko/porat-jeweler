@@ -187,7 +187,8 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               { Icon: IconInstagram, label: 'Instagram', href: social.instagram },
               { Icon: IconFacebook, label: 'Facebook', href: social.facebook },
               { Icon: IconTikTok, label: 'TikTok', href: social.tiktok },
-            ].map(({ Icon, label, href }) => (
+            ].filter(({ href }) => href && href !== '#')
+              .map(({ Icon, label, href }) => (
               <a
                 key={label}
                 href={href}
