@@ -92,9 +92,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-a { color: inherit; text-decoration: none; }
-button { font: inherit; color: inherit; cursor: pointer; }
-img, svg { display: block; max-width: 100%; }
+:where(body:not(:has(#sanity-studio-root))) a { color: inherit; text-decoration: none; }
+:where(body:not(:has(#sanity-studio-root))) button { font: inherit; color: inherit; cursor: pointer; }
+:where(body:not(:has(#sanity-studio-root))) img,
+:where(body:not(:has(#sanity-studio-root))) svg { display: block; max-width: 100%; }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
