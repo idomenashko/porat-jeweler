@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal, RevealStagger, RevealItem } from '@/components/ui/Reveal';
+import { getGalleryItems } from '@/sanity/queries';
 
 export const revalidate = 60;
 
@@ -28,7 +29,20 @@ const TONE_BG: Record<string, string> = {
   sketch: 'var(--bg-paper)',
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const sanityItems = await getGalleryItems();
+
+  const displayItems = (sanityItems && sanityItems.length > 0)
+    ? sanityItems.map((item) => ({
+        he: item.title ?? '',
+        en: item.materials ?? '',
+        cat: item.category ?? '',
+        desc: item.description ?? '',
+        slug: item.slug?.current ?? '',
+        tone: 'cream',
+      }))
+    : PORTFOLIO;
+
   return (
     <div style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg-paper)' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)' }}>
@@ -39,7 +53,7 @@ export default function GalleryPage() {
           </h1>
         </Reveal>
         <RevealStagger style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 36 }}>
-          {PORTFOLIO.map((p, i) => (
+          {displayItems.filter(p => p.slug).map((p, i) => (
             <RevealItem key={p.slug}>
               <Link href={`/gallery/${p.slug}`} style={{ display: 'block', textDecoration: 'none' }}>
                 <div style={{ aspectRatio: '4/5', background: TONE_BG[p.tone] || TONE_BG.cream, marginBottom: 18, position: 'relative', overflow: 'hidden' }}>

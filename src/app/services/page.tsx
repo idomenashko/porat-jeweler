@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal, RevealStagger, RevealItem } from '@/components/ui/Reveal';
+import { getServices } from '@/sanity/queries';
 
 export const revalidate = 60;
 
@@ -23,7 +24,19 @@ const SERVICES = [
   { num: '10', he: 'תכשיטים מוכנים', en: 'Ready-to-Wear', desc: 'אוסף מצומצם של חתיכות מוכנות, מוגבל בעותקים.', slug: 'ready-to-wear' },
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const sanityServices = await getServices();
+
+  const displayServices = (sanityServices && sanityServices.length > 0)
+    ? sanityServices.map((s, i) => ({
+        num: s.number ?? String(i + 1).padStart(2, '0'),
+        he: s.title ?? '',
+        en: s.englishTitle ?? '',
+        desc: s.description ?? '',
+        slug: s.slug?.current ?? '',
+      }))
+    : SERVICES;
+
   return (
     <div style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg)' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)' }}>
@@ -35,7 +48,7 @@ export default function ServicesPage() {
         </Reveal>
 
         <RevealStagger style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 0, borderTop: '1px solid var(--line-soft)', borderInlineStart: '1px solid var(--line-soft)' }}>
-          {SERVICES.map((s) => (
+          {displayServices.filter(s => s.slug).map((s) => (
             <RevealItem key={s.slug}>
               <Link href={`/services/${s.slug}`} style={{ display: 'block', padding: '36px 32px 32px', borderInlineEnd: '1px solid var(--line-soft)', borderBottom: '1px solid var(--line-soft)', minHeight: 220, textDecoration: 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>

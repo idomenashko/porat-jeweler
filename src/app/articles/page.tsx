@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal, RevealStagger, RevealItem } from '@/components/ui/Reveal';
+import { getArticles } from '@/sanity/queries';
 
 export const revalidate = 60;
 
@@ -24,7 +25,20 @@ const TONE_BG: Record<string, string> = {
   rose: 'linear-gradient(135deg, #f0d8c2, #d9b491 50%, #a87b54 100%)',
 };
 
-export default function ArticlesPage() {
+export default async function ArticlesPage() {
+  const sanityArticles = await getArticles();
+
+  const displayArticles = (sanityArticles && sanityArticles.length > 0)
+    ? sanityArticles.map(a => ({
+        title: a.title ?? '',
+        slug: a.slug?.current ?? '',
+        category: a.category ?? '',
+        readTime: a.readTime ?? '',
+        excerpt: a.excerpt ?? '',
+        tone: 'cream',
+      }))
+    : ARTICLES;
+
   return (
     <div style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg-soft)' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)' }}>
@@ -35,7 +49,7 @@ export default function ArticlesPage() {
           </h1>
         </Reveal>
         <RevealStagger style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 36 }}>
-          {ARTICLES.map((a) => (
+          {displayArticles.filter(a => a.slug).map((a) => (
             <RevealItem key={a.slug}>
               <article>
                 <Link href={`/articles/${a.slug}`} style={{ display: 'block', aspectRatio: '4/3', background: TONE_BG[a.tone] || TONE_BG.cream, marginBottom: 18, textDecoration: 'none' }} />

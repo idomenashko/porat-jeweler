@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal } from '@/components/ui/Reveal';
 import { notFound } from 'next/navigation';
+import { getServices, getServiceBySlug } from '@/sanity/queries';
 
 export const revalidate = 60;
 
@@ -20,11 +21,29 @@ const SERVICES = [
 ];
 
 export async function generateStaticParams() {
-  return SERVICES.map((s) => ({ slug: s.slug }));
+  const sanityServices = await getServices();
+  const sanityParams = sanityServices
+    .filter(s => s.slug?.current)
+    .map(s => ({ slug: s.slug!.current! }));
+
+  const hardcodedParams = SERVICES
+    .filter(s => !sanityParams.some(p => p.slug === s.slug))
+    .map(s => ({ slug: s.slug }));
+
+  return [...sanityParams, ...hardcodedParams];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
+
+  const sanityService = await getServiceBySlug(slug);
+  if (sanityService) {
+    return {
+      title: `${sanityService.title ?? ''} | PORAT — Private Jeweler`,
+      description: sanityService.description ?? '',
+    };
+  }
+
   const service = SERVICES.find((s) => s.slug === slug);
   if (!service) return { title: 'שירות לא נמצא' };
   return {
@@ -33,11 +52,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const service = SERVICES.find((s) => s.slug === slug);
-  if (!service) notFound();
+interface ServiceData {
+  num: string;
+  he: string;
+  en: string;
+  desc: string;
+  body: string;
+}
 
+function ServicePageContent({ service }: { service: ServiceData }) {
   return (
     <div style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg-paper)' }}>
       <div style={{ maxWidth: 980, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)' }}>
@@ -77,4 +100,33 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       </div>
     </div>
   );
+}
+
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  const sanityService = await getServiceBySlug(slug);
+
+  if (sanityService) {
+    const service: ServiceData = {
+      num: sanityService.number ?? '',
+      he: sanityService.title ?? '',
+      en: sanityService.englishTitle ?? '',
+      desc: sanityService.description ?? '',
+      body: sanityService.description ?? '',
+    };
+    return <ServicePageContent service={service} />;
+  }
+
+  const found = SERVICES.find(s => s.slug === slug);
+  if (!found) notFound();
+
+  const service: ServiceData = {
+    num: found.num,
+    he: found.he,
+    en: found.en,
+    desc: found.desc,
+    body: found.body,
+  };
+  return <ServicePageContent service={service} />;
 }

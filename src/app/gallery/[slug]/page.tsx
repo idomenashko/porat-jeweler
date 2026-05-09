@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { SectionEyebrow } from '@/components/ui/SectionEyebrow';
 import { Reveal } from '@/components/ui/Reveal';
 import { notFound } from 'next/navigation';
+import { getGalleryItems, getGalleryItemBySlug } from '@/sanity/queries';
 
 export const revalidate = 60;
 
@@ -25,21 +26,40 @@ const TONE_BG: Record<string, string> = {
 };
 
 export async function generateStaticParams() {
-  return PORTFOLIO.map((p) => ({ slug: p.slug }));
+  const sanityItems = await getGalleryItems();
+  const sanityParams = sanityItems
+    .filter(item => item.slug?.current)
+    .map(item => ({ slug: item.slug!.current! }));
+
+  const hardcodedParams = PORTFOLIO
+    .filter(p => !sanityParams.some(sp => sp.slug === p.slug))
+    .map(p => ({ slug: p.slug }));
+
+  return [...sanityParams, ...hardcodedParams];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
+
+  const sanityItem = await getGalleryItemBySlug(slug);
+  if (sanityItem) {
+    return { title: `${sanityItem.title ?? ''} | PORAT`, description: sanityItem.description ?? '' };
+  }
+
   const item = PORTFOLIO.find((p) => p.slug === slug);
   if (!item) return { title: 'פריט לא נמצא' };
   return { title: `${item.he} | PORAT`, description: item.desc };
 }
 
-export default async function GalleryItemPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const item = PORTFOLIO.find((p) => p.slug === slug);
-  if (!item) notFound();
+interface GalleryItemData {
+  he: string;
+  en: string;
+  cat: string;
+  desc: string;
+  tone: string;
+}
 
+function GalleryItemPageContent({ item }: { item: GalleryItemData }) {
   return (
     <div style={{ paddingBlock: 'clamp(72px, 9vw, 140px)', background: 'var(--bg-paper)' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', paddingInline: 'clamp(20px, 4vw, 64px)' }}>
@@ -68,4 +88,33 @@ export default async function GalleryItemPage({ params }: { params: Promise<{ sl
       </div>
     </div>
   );
+}
+
+export default async function GalleryItemPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  const sanityItem = await getGalleryItemBySlug(slug);
+
+  if (sanityItem) {
+    const item: GalleryItemData = {
+      he: sanityItem.title ?? '',
+      en: sanityItem.materials ?? '',
+      cat: sanityItem.category ?? '',
+      desc: sanityItem.description ?? '',
+      tone: 'cream',
+    };
+    return <GalleryItemPageContent item={item} />;
+  }
+
+  const found = PORTFOLIO.find((p) => p.slug === slug);
+  if (!found) notFound();
+
+  const item: GalleryItemData = {
+    he: found.he,
+    en: found.en,
+    cat: found.cat,
+    desc: found.desc,
+    tone: found.tone,
+  };
+  return <GalleryItemPageContent item={item} />;
 }
